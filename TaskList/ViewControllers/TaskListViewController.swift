@@ -98,7 +98,6 @@ private extension TaskListViewController {
                 addNewTask()
             }
         )
-        
         navigationController?.navigationBar.tintColor = .white
     }
 }

@@ -5,7 +5,6 @@
 //  Created by Roman Lantsov on 03.04.2023.
 //
 
-import Foundation
 import CoreData
 
 final class StorageManager {
@@ -22,9 +21,22 @@ final class StorageManager {
         return container
     }()
     
-    // MARK: - Инициализация
+    // MARK: - Init
     private init() {}
-
+    
+    //MARK: - Fetch Data
+    func fetchData() -> [Task] {
+        let fetchRequest = Task.fetchRequest()
+        var taskList: [Task] = []
+        
+        do {
+            taskList = try persistentContainer.viewContext.fetch(fetchRequest)
+        } catch {
+            print(error)
+        }
+        return taskList
+    }
+    
     // MARK: - Core Data Saving support
     func saveContext() {
         let context = persistentContainer.viewContext
@@ -32,8 +44,8 @@ final class StorageManager {
             do {
                 try context.save()
             } catch {
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+                let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
             }
         }
     }
