@@ -20,8 +20,7 @@ final class StorageManager {
         })
         return container
     }()
-    
-    // MARK: - Init
+
     private init() {}
     
     //MARK: - Fetch Data

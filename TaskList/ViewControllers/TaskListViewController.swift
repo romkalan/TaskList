@@ -11,7 +11,7 @@ class TaskListViewController: UITableViewController {
     
     private let cellID = "task"
     private var taskList: [Task] = []
-    private var storageManager = StorageManager.shared
+    private let storageManager = StorageManager.shared
     private lazy var viewContext = storageManager.persistentContainer.viewContext
 
     override func viewDidLoad() {
@@ -28,13 +28,7 @@ class TaskListViewController: UITableViewController {
     }
     
     private func fetchData() {
-        let fetchRequest = Task.fetchRequest()
-        
-        do {
-            taskList = try viewContext.fetch(fetchRequest)
-        } catch {
-            print(error)
-        }
+        taskList = storageManager.fetchData()
     }
     
     private func save(_ taskName: String) {
@@ -132,5 +126,6 @@ extension TaskListViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let task = taskList[indexPath.row]
         showAlert(withTitle: "Update Task", andMessage: "What do you want to do?", currentTask: task, at: indexPath)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
