@@ -32,9 +32,9 @@ final class StorageManager {
         return task
     }
     
-    func updateTask(at indexPath: IndexPath, on taskName: String) {
+    func updateTask(at index: Int, on taskName: String) {
         let taskList = fetchData()
-        let task = taskList[indexPath.row]
+        let task = taskList[index]
         task.title = taskName
         saveContext()
     }
