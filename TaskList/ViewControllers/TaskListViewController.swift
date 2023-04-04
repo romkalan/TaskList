@@ -31,18 +31,14 @@ final class TaskListViewController: UITableViewController {
     }
     
     private func save(_ taskName: String) {
-        let task = Task(context: storageManager.context)
-        task.title = taskName
+        let task = storageManager.createNewTask(withName: taskName)
         taskList.append(task)
-        storageManager.saveContext()
         let indexPath = IndexPath(row: taskList.count - 1, section: 0)
         tableView.insertRows(at: [indexPath], with: .automatic)
     }
     
     private func updateTaskName(at indexPath: IndexPath, on taskName: String) {
-        let task = taskList[indexPath.row]
-        task.title = taskName
-        storageManager.saveContext()
+        storageManager.updateTask(at: indexPath, on: taskName)
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
     
@@ -115,7 +111,7 @@ extension TaskListViewController {
 extension TaskListViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            storageManager.deleteContext(taskList[indexPath.row])
+            storageManager.delete(taskList[indexPath.row])
             taskList.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }

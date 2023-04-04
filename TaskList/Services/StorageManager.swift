@@ -25,6 +25,25 @@ final class StorageManager {
     
     private init() {}
     
+    func createNewTask(withName name: String) -> Task {
+        let task = Task(context: context)
+        task.title = name
+        saveContext()
+        return task
+    }
+    
+    func updateTask(at indexPath: IndexPath, on taskName: String) {
+        let taskList = fetchData()
+        let task = taskList[indexPath.row]
+        task.title = taskName
+        saveContext()
+    }
+    
+    func delete(_ task: Task) {
+        context.delete(task)
+        saveContext()
+    }
+    
     //MARK: - Fetch Data
     func fetchData() -> [Task] {
         let fetchRequest = Task.fetchRequest()
@@ -48,10 +67,5 @@ final class StorageManager {
                 fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
             }
         }
-    }
-    
-    func deleteContext(_ task: Task) {
-        context.delete(task)
-        saveContext()
     }
 }
