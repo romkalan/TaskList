@@ -21,6 +21,8 @@ final class StorageManager {
         return container
     }()
 
+    lazy var context = persistentContainer.viewContext
+    
     private init() {}
     
     //MARK: - Fetch Data
@@ -29,7 +31,7 @@ final class StorageManager {
         var taskList: [Task] = []
         
         do {
-            taskList = try persistentContainer.viewContext.fetch(fetchRequest)
+            taskList = try context.fetch(fetchRequest)
         } catch {
             print(error)
         }
@@ -38,7 +40,6 @@ final class StorageManager {
     
     // MARK: - Core Data Saving support
     func saveContext() {
-        let context = persistentContainer.viewContext
         if context.hasChanges {
             do {
                 try context.save()
@@ -47,5 +48,10 @@ final class StorageManager {
                 fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
             }
         }
+    }
+    
+    func deleteContext(_ task: Task) {
+        context.delete(task)
+        saveContext()
     }
 }

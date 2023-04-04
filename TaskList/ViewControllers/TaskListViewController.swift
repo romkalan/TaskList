@@ -12,7 +12,6 @@ final class TaskListViewController: UITableViewController {
     private let cellID = "task"
     private var taskList: [Task] = []
     private let storageManager = StorageManager.shared
-    private lazy var viewContext = storageManager.persistentContainer.viewContext
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,7 +31,7 @@ final class TaskListViewController: UITableViewController {
     }
     
     private func save(_ taskName: String) {
-        let task = Task(context: viewContext)
+        let task = Task(context: storageManager.context)
         task.title = taskName
         taskList.append(task)
         storageManager.saveContext()
@@ -116,10 +115,9 @@ extension TaskListViewController {
 extension TaskListViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            viewContext.delete(taskList[indexPath.row])
+            storageManager.deleteContext(taskList[indexPath.row])
             taskList.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)
-            storageManager.saveContext()
         }
     }
     
