@@ -38,11 +38,11 @@ final class TaskListViewController: UITableViewController {
     }
     
     private func updateTaskName(at indexPath: IndexPath, on taskName: String) {
-        storageManager.updateTask(at: indexPath.row, on: taskName)
+        storageManager.updateTask(taskList[indexPath.row], on: taskName)
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
     
-//MARK: - Alert Controller
+    //MARK: - Alert Controller
     private func showAlert(withTitle title: String, andMessage message: String, currentTask: Task? = nil, at indexPath: IndexPath? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)

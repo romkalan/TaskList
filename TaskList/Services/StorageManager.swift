@@ -11,7 +11,7 @@ final class StorageManager {
     static let shared = StorageManager()
         
     // MARK: - Core Data stack
-    lazy var persistentContainer: NSPersistentContainer = {
+    private let persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "TaskList")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
@@ -32,9 +32,7 @@ final class StorageManager {
         return task
     }
     
-    func updateTask(at index: Int, on taskName: String) {
-        let taskList = fetchData()
-        let task = taskList[index]
+    func updateTask(_ task: Task, on taskName: String) {
         task.title = taskName
         saveContext()
     }
@@ -44,7 +42,6 @@ final class StorageManager {
         saveContext()
     }
     
-    //MARK: - Fetch Data
     func fetchData() -> [Task] {
         let fetchRequest = Task.fetchRequest()
         var taskList: [Task] = []
