@@ -27,7 +27,14 @@ final class TaskListViewController: UITableViewController {
     }
     
     private func fetchData() {
-        taskList = storageManager.fetchData()
+        storageManager.fetchData { [unowned self] result in
+            switch result {
+            case .success(let taskList):
+                self.taskList = taskList
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
     
     private func save(_ taskName: String) {

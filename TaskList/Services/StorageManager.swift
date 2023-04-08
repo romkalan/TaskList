@@ -42,16 +42,14 @@ final class StorageManager {
         saveContext()
     }
     
-    func fetchData() -> [Task] {
+    func fetchData(completion: (Result<[Task], Error>) -> Void) {
         let fetchRequest = Task.fetchRequest()
-        var taskList: [Task] = []
-        
         do {
-            taskList = try context.fetch(fetchRequest)
-        } catch {
-            print(error)
+            let taskList = try context.fetch(fetchRequest)
+            completion(.success(taskList))
+        } catch let error {
+            completion(.failure(error))
         }
-        return taskList
     }
     
     // MARK: - Core Data Saving support
