@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  TaskList
 //
-//  Created by Alexey Efimov on 02.04.2023.
+//  Created by Roman Lantsov on 02.04.2023.
 //
 
 import UIKit
